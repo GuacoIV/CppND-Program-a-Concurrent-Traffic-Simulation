@@ -16,7 +16,7 @@ T MessageQueue<T>::receive()
     std::unique_lock<std::mutex> lock(_mutex);
     _cond.wait(lock, [this] { return !_queue.empty(); });
     auto msg = std::move(_queue.front());
-    _queue.pop_front();
+    _queue.clear(); //only concerned with front element
     return msg;
 }
 
@@ -91,7 +91,7 @@ void TrafficLight::cycleThroughPhases()
 
             long seed = now.time_since_epoch().count();
             srand(seed);
-            cycleTime = std::chrono::milliseconds(rand() % 6000 + 4000);
+            cycleTime = std::chrono::milliseconds(rand() % 2000 + 4000);
             accum = std::chrono::milliseconds::zero();
         }
 
